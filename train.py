@@ -119,6 +119,7 @@ def main():
     else:
         state = None
 
+    #! This is where it creates the model
     state_dict = state["state_dict"] if state else None
     model = architecture.COVIDNext50(n_classes=config.n_classes)
     if state_dict:

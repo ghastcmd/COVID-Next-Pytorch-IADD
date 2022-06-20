@@ -22,6 +22,7 @@ train_labels = "/data/ssd/datasets/covid/COVIDxV2/data/train_COVIDx.txt"
 val_imgs = "/data/ssd/datasets/covid/COVIDxV2/data/test"
 val_labels = "/data/ssd/datasets/covid/COVIDxV2/data/test_COVIDx.txt"
 
+#! Change this to modify the number of clases
 # Categories mapping
 mapping = {
     'normal': 0,
