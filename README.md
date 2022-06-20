@@ -1,3 +1,7 @@
+# IADD project
+
+The purpose of this repository is to host source-code for the COVID-Next deep convolutional neural network model applied to a different dataset. The dataset used can be found on [this link](https://drive.google.com/drive/folders/1saC7ZN_gne2BsOgM2W3Mob4GZDfqiF6A?usp=sharing), and it was generated with the [Kaggle dataset](https://kaggle.com/) ans using the `parapng.ipynb` script.
+
 # COVID-Next &rarr; Pytorch upgrade of the COVID-Net
 
 Inspired by the recent paper [COVID-Net: A Tailored Deep Convolutional Neural Network Design for Detection of COVID-19 Cases from Chest Radiography Images](https://arxiv.org/pdf/2003.09871.pdf) and its Tensorflow [implementation](https://github.com/lindawangg/COVID-Net), we are now open sourcing the upgraded Pytorch version called COVID-Next.
