@@ -1,6 +1,6 @@
 # IADD project
 
-The purpose of this repository is to host source-code for the COVID-Next deep convolutional neural network model applied to a different dataset. The dataset used can be found on [this link](https://drive.google.com/drive/folders/1saC7ZN_gne2BsOgM2W3Mob4GZDfqiF6A?usp=sharing), and it was generated with the [Kaggle dataset](https://kaggle.com/), using the `parapng.ipynb` script.
+The purpose of this repository is to host source-code for the COVID-Next deep convolutional neural network model applied to a different dataset. The dataset used can be found on [this link](https://drive.google.com/drive/folders/1saC7ZN_gne2BsOgM2W3Mob4GZDfqiF6A?usp=sharing), and it was generated with the [Kaggle dataset](https://kaggle.com/c/siim-covid19-detection), using the `parapng.ipynb` script.
 
 # COVID-Next &rarr; Pytorch upgrade of the COVID-Net
 
