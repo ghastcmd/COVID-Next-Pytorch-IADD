@@ -9,6 +9,7 @@ from config import mapping
 
 class COVIDxFolder(Dataset):
     def __init__(self, img_dir, labels_file, transforms):
+    
         self.img_pths, self.labels = self._prepare_data(img_dir, labels_file)
         self.transforms = transforms
 

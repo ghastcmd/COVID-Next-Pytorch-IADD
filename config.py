@@ -25,9 +25,8 @@ val_labels = "/data/ssd/datasets/covid/COVIDxV2/data/test_COVIDx.txt"
 #! Change this to modify the number of clases
 # Categories mapping
 mapping = {
-    'normal': 0,
-    'pneumonia': 1,
-    'COVID-19': 2
+    'Typical and Atypical': 0,
+    'Indeterminate': 1,
 }
 # Loss weigths order follows the order in the category mapping dict
 loss_weights = [0.05, 0.05, 1.0]
