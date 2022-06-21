@@ -2,7 +2,7 @@
 name = "COVIDNext50_NewData"
 gpu = True
 batch_size = 64
-n_threads = 20
+n_threads = 4
 random_seed = 1337
 
 # Model
@@ -16,11 +16,11 @@ lr_reduce_factor = 0.7
 lr_reduce_patience = 5
 
 # Data
-train_imgs = "/data/ssd/datasets/covid/COVIDxV2/data/train"
-train_labels = "/data/ssd/datasets/covid/COVIDxV2/data/train_COVIDx.txt"
+train_imgs = "./dataset/Base IADD"
+train_labels = "./dataset/Base IADD/train.txt"
 
-val_imgs = "/data/ssd/datasets/covid/COVIDxV2/data/test"
-val_labels = "/data/ssd/datasets/covid/COVIDxV2/data/test_COVIDx.txt"
+val_imgs = "./dataset/Base IADD"
+val_labels = "./dataset/Base IADD/test.txt"
 
 #! Change this to modify the number of clases
 # Categories mapping

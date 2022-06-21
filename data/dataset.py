@@ -18,12 +18,12 @@ class COVIDxFolder(Dataset):
             labels_raw = f.readlines()
 
         labels, img_pths = [], []
-        for i in range(len(labels_raw)):
-            data = labels_raw[i].split()
-            img_name = data[1]
+        for i in range(1,len(labels_raw)):
+            data = labels_raw[i].strip().split(',')
+            img_name = data[0]
             img_pth = os.path.join(img_dir, img_name)
             img_pths.append(img_pth)
-            labels.append(mapping[data[2]])
+            labels.append(int(data[1]))
 
         return img_pths, labels
 
