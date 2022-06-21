@@ -1,13 +1,13 @@
 # General
 name = "COVIDNext50_NewData"
 gpu = True
-batch_size = 64
+batch_size = 16
 n_threads = 4
 random_seed = 1337
 
 # Model
 # Model weights path
-weights = "./experiments/ckpts/<model.pth>"
+weights = "" # ./experiments/ckpts/<model.pth>
 
 # Optimizer
 lr = 1e-4
@@ -29,7 +29,7 @@ mapping = {
     'Indeterminate': 1,
 }
 # Loss weigths order follows the order in the category mapping dict
-loss_weights = [0.05, 0.05, 1.0]
+loss_weights = [0.05, 0.05]
 
 width = 256
 height = 256
@@ -37,6 +37,6 @@ n_classes = len(mapping)
 
 # Training
 epochs = 300
-log_steps = 200
-eval_steps = 400
+log_steps = 1
+eval_steps = 1
 ckpts_dir = "./experiments/ckpts"

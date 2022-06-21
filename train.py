@@ -7,6 +7,7 @@ import torch
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.nn import CrossEntropyLoss
+from tqdm import tqdm
 
 from data.dataset import COVIDxFolder
 from data import transforms
@@ -152,7 +153,7 @@ def main():
     for epoch in range(config.epochs):
         log.info("Started epoch {}/{}".format(epoch + 1,
                                               config.epochs))
-        for data in train_loader:
+        for data in tqdm(train_loader):
             imgs, labels = data
             imgs = util.to_device(imgs, gpu=use_gpu)
             labels = util.to_device(labels, gpu=use_gpu)
@@ -163,27 +164,28 @@ def main():
             loss.backward()
             optimizer.step()
 
-            if global_step % config.log_steps == 0 and global_step > 0:
-                probs = model.module.probability(logits)
-                preds = torch.argmax(probs, dim=1).detach().cpu().numpy()
-                labels = labels.cpu().detach().numpy()
-                acc, f1, _, _ = util.clf_metrics(preds, labels)
-                lr = util.get_learning_rate(optimizer)
+        if global_step % config.log_steps == 0 and global_step > 0:
+            probs = model.module.probability(logits)
+            preds = torch.argmax(probs, dim=1).detach().cpu().numpy()
+            labels = labels.cpu().detach().numpy()
+            acc, f1, _, _ = util.clf_metrics(preds, labels)
+            lr = util.get_learning_rate(optimizer)
 
-                log.info("Step {} | TRAINING batch: Loss {:.4f} | F1 {:.4f} | "
-                         "Accuracy {:.4f} | LR {:.2e}".format(global_step,
-                                                              loss.item(),
-                                                              f1, acc,
-                                                              lr))
+            log.info("Step {} | TRAINING batch: Loss {:.4f} | F1 {:.4f} | "
+                        "Accuracy {:.4f} | LR {:.2e}".format(global_step,
+                                                            loss.item(),
+                                                            f1, acc,
+                                                            lr))
 
-            if global_step % config.eval_steps == 0 and global_step > 0:
-                best_score = validate(val_loader,
-                                      model,
-                                      best_score=best_score,
-                                      global_step=global_step,
-                                      cfg=config)
-                scheduler.step(best_score)
-            global_step += 1
+        if global_step % config.eval_steps == 0 and global_step > 0:
+            best_score = validate(val_loader,
+                                    model,
+                                    best_score=best_score,
+                                    global_step=global_step,
+                                    cfg=config)
+            scheduler.step(best_score)
+
+        global_step += 1
 
 
 if __name__ == '__main__':
