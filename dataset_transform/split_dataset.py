@@ -3,16 +3,36 @@ import random
 
 from sklearn.model_selection import train_test_split
 
-def split(input_list, ratio, seed):
+def pair_shuffle(list1, list2, seed):
+    assert(len(list1) == len(list2))
+    
     random.seed(seed)
-    random.shuffle(input_list)
-    index = int(len(input_list) - len(input_list) * ratio)
-    return input_list[:index], input_list[index:]
+    index_list = [x for x in range(len(list1))]
+    random.shuffle(index_list)
+    
+    return_list1 = []
+    return_list2 = []
 
-def write_to_folder(dir_name, file_name, iter_list):
+    for index in index_list:
+        return_list1.append(list1[index])
+        return_list2.append(list2[index])
+        
+    return return_list1, return_list2
+
+def split(input_list, labels, ratio, seed):
+    return_list, return_labels = pair_shuffle(input_list, labels)
+
+    index = int(len(input_list) - len(input_list) * ratio)
+    return (return_list[:index], return_list[index:],
+            return_labels[:index], return_labels[index:])
+
+def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
+    assert(len(iter_list_x) == len(iter_list_y))
+
     with open(os.path.join(dir_name, file_name), 'w+') as fp:
-        for line in iter_list:
-            fp.write(f'{line}\n')
+        fp.write('img_path,label\n')
+        for line, label in zip(iter_list_x, iter_list_y):
+            fp.write(f'{line},{label}\n')
 
 if __name__ == '__main__':
     base_dir = './dataset/Base IADD/'
@@ -46,16 +66,21 @@ if __name__ == '__main__':
             elif type_folder == 'Indeterminate':
                 indeterminate.append(full_name)
     
-    
-    ant_train, ant_test = split(atypical_n_typical, 0.3, 123)
-    ind_train, ind_test = split(indeterminate, 0.3, 123)
+    ant_labels = [0 for _ in range(len(atypical_n_typical))]
+    ind_labels = [1 for _ in range(len(indeterminate))]
 
-    total_train = ant_train + ind_train
-    total_test = ant_test + ind_test
+    ant_x_train, ant_x_test, ant_y_train, ant_y_test = split(atypical_n_typical, ant_labels, 0.3, 123)
+    ind_x_train, ind_x_test, ind_y_train, ind_y_test = split(indeterminate, ind_labels, 0.3, 123)
+
+    total_x_train = ant_x_train + ind_x_train
+    total_x_test = ant_x_test + ind_x_test
+    
+    total_y_train = ant_y_train + ind_y_train
+    total_y_test = ant_y_test + ind_y_test
     
     random.seed(123)
-    random.shuffle(total_train)
-    random.shuffle(total_test)
+    random.shuffle(total_x_train, total_y_train)
+    random.shuffle(total_x_test, total_y_test)
 
-    write_to_folder(base_dir, 'train.txt', total_train)
-    write_to_folder(base_dir, 'test.txt', total_test)
+    write_to_folder(base_dir, 'train.txt', total_x_train, total_y_train)
+    write_to_folder(base_dir, 'test.txt', total_x_test, total_y_test)
