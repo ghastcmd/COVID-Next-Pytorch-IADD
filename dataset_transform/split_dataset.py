@@ -20,7 +20,7 @@ def pair_shuffle(list1, list2, seed):
     return return_list1, return_list2
 
 def split(input_list, labels, ratio, seed):
-    return_list, return_labels = pair_shuffle(input_list, labels)
+    return_list, return_labels = pair_shuffle(input_list, labels, seed)
 
     index = int(len(input_list) - len(input_list) * ratio)
     return (return_list[:index], return_list[index:],
@@ -78,9 +78,8 @@ if __name__ == '__main__':
     total_y_train = ant_y_train + ind_y_train
     total_y_test = ant_y_test + ind_y_test
     
-    random.seed(123)
-    random.shuffle(total_x_train, total_y_train)
-    random.shuffle(total_x_test, total_y_test)
+    total_x_train, total_y_train = pair_shuffle(total_x_train, total_y_train, 123)
+    total_x_test, total_y_test = pair_shuffle(total_x_test, total_y_test, 123)
 
     write_to_folder(base_dir, 'train.txt', total_x_train, total_y_train)
     write_to_folder(base_dir, 'test.txt', total_x_test, total_y_test)
