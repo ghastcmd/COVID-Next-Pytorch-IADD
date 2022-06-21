@@ -1,6 +1,6 @@
 import os
 
-if __name__ == '__main__':
+def rename_dataset_files():
     base_folders = [
         './dataset/Base IADD/Atypical',
         './dataset/Base IADD/Indeterminate',
@@ -14,3 +14,6 @@ if __name__ == '__main__':
                     os.path.join(base_folder, file),
                     os.path.join(base_folder, f'{name:0>4}.{ext}')
                 )
+
+if __name__ == '__main__':
+    rename_dataset_files()

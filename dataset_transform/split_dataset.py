@@ -34,7 +34,7 @@ def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
         for line, label in zip(iter_list_x, iter_list_y):
             fp.write(f'{line},{label}\n')
 
-if __name__ == '__main__':
+def generate_split_dataset_files():
     base_dir = './dataset/Base IADD/'
     
     types_folder = [
@@ -83,3 +83,6 @@ if __name__ == '__main__':
 
     write_to_folder(base_dir, 'train.txt', total_x_train, total_y_train)
     write_to_folder(base_dir, 'test.txt', total_x_test, total_y_test)
+    
+if __name__ == '__main__':
+    generate_split_dataset_files()
