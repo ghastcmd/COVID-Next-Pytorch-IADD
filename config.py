@@ -10,7 +10,7 @@ random_seed = 1337
 weights = "" # ./experiments/ckpts/<model.pth>
 
 # Optimizer
-lr = 1e-4
+lr = 1e-5
 weight_decay = 1e-3
 lr_reduce_factor = 0.7
 lr_reduce_patience = 5

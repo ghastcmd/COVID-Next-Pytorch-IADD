@@ -13,7 +13,8 @@ def train_transforms(width, height):
         #                             shear=5)], p=0.5),
         # transforms.RandomApply([
         #     transforms.ColorJitter(brightness=0.3, contrast=0.3)], p=0.5),
-        transforms.ToTensor()
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
     ]
     return transforms.Compose(trans_list)
 
@@ -21,6 +22,7 @@ def train_transforms(width, height):
 def val_transforms(width, height):
     trans_list = [
         # transforms.Resize((height, width)),
-        transforms.ToTensor()
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
     ]
     return transforms.Compose(trans_list)

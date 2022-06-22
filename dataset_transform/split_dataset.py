@@ -34,13 +34,15 @@ def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
         for line, label in zip(iter_list_x, iter_list_y):
             fp.write(f'{line},{label}\n')
 
-def generate_split_dataset_files():
+def generate_split_dataset_files(quantity = 948):
+    assert(quantity <= 948)
+    
     base_dir = './dataset/Base IADD/'
     
     types_folder = [
-        ('Atypical', 474, []),
-        ('Typical', 474, []),
-        ('Indeterminate', 948, []),
+        ('Atypical', quantity//2, []),
+        ('Typical', quantity//2, []),
+        ('Indeterminate', quantity, []),
     ]
 
     for type_folder, max_files, to_append in types_folder:
