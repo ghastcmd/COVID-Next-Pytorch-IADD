@@ -94,8 +94,7 @@ def main():
 
     log.info("Loading train dataset")
     train_dataset = COVIDxFolder(config.train_imgs, config.train_labels,
-                                 transforms.train_transforms(config.width,
-                                                             config.height))
+                                 transforms.train_transforms())
     train_loader = DataLoader(train_dataset,
                               batch_size=config.batch_size,
                               shuffle=True,
@@ -106,8 +105,7 @@ def main():
 
     log.info("Loading val dataset")
     val_dataset = COVIDxFolder(config.val_imgs, config.val_labels,
-                               transforms.val_transforms(config.width,
-                                                         config.height))
+                               transforms.val_transforms())
     val_loader = DataLoader(val_dataset,
                             batch_size=config.batch_size,
                             shuffle=False,

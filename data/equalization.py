@@ -1,17 +1,25 @@
-from __future__ import print_function
+import os
+
 import cv2 as cv
-import matplotlib.pyplot as plt
 
 
-src = cv.imread('./dataset/Base IADD/Atypical/0001.png')
-if src is None:
-    print('Could not open or find the image:')
-    exit(0)
-print(src.shape)
-src = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
-dst = cv.equalizeHist(src)
-#cv.imshow('Source image', src)
-#cv.imshow('Equalized Image', dst)
-cv.imwrite('./dataset/Base IADD/Atypical2/0001.png', dst)
-#plt.imsave('./dataset/Atypical2/0001.png', dst)
-#cv.waitKey()
+def equalize_all_imgs():
+    base_dir = '.\\dataset\\Base IADD\\'
+    
+    folders = [
+        'Atypical',
+        'Indeterminate',
+        'Typical',
+    ]
+    
+    for folder in folders:
+        folder = os.path.join(base_dir, folder)
+        for file in os.listdir(folder):
+            file = os.path.join(folder, file)
+            
+            src = cv.imread(file)
+        
+            src = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
+            dst = cv.equalizeHist(src)
+
+            cv.imwrite(file, dst)

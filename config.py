@@ -1,8 +1,8 @@
 # General
 name = "COVIDNext50_NewData"
 gpu = True
-batch_size = 64
-n_threads = 8
+batch_size = 32
+n_threads = 4
 random_seed = 1337
 
 # Model
@@ -10,7 +10,7 @@ random_seed = 1337
 weights = "" # ./experiments/ckpts/<model.pth>
 
 # Optimizer
-lr = 1e-5
+lr = 1e-4
 weight_decay = 1e-3
 lr_reduce_factor = 0.7
 lr_reduce_patience = 5
