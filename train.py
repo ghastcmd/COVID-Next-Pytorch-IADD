@@ -148,7 +148,7 @@ def main():
                                    gpu=use_gpu)
     loss_fn = CrossEntropyLoss(reduction='mean', weight=class_weights)
 
-    if not os.isdir(config.ckpts_dir):
+    if not os.path.isdir(config.ckpts_dir):
         os.mkdir(config.ckpts_dir)
 
     # Reset the best metric score
