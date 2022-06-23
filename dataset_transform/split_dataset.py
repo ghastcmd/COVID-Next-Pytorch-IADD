@@ -34,7 +34,7 @@ def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
         for line, label in zip(iter_list_x, iter_list_y):
             fp.write(f'{line},{label}\n')
 
-def generate_split_dataset_files(quantity = 948):
+def generate_split_dataset_files(split_percentage, quantity = 948):
     assert(quantity <= 948)
     
     base_dir = './dataset/Base IADD/'
@@ -71,8 +71,8 @@ def generate_split_dataset_files(quantity = 948):
     ant_labels = [0 for _ in range(len(atypical_n_typical))]
     ind_labels = [1 for _ in range(len(indeterminate))]
 
-    ant_x_train, ant_x_test, ant_y_train, ant_y_test = split(atypical_n_typical, ant_labels, 0.3, 123)
-    ind_x_train, ind_x_test, ind_y_train, ind_y_test = split(indeterminate, ind_labels, 0.3, 123)
+    ant_x_train, ant_x_test, ant_y_train, ant_y_test = split(atypical_n_typical, ant_labels, split_percentage, 123)
+    ind_x_train, ind_x_test, ind_y_train, ind_y_test = split(indeterminate, ind_labels, split_percentage, 123)
 
     total_x_train = ant_x_train + ind_x_train
     total_x_test = ant_x_test + ind_x_test
@@ -87,4 +87,4 @@ def generate_split_dataset_files(quantity = 948):
     write_to_folder(base_dir, 'test.txt', total_x_test, total_y_test)
     
 if __name__ == '__main__':
-    generate_split_dataset_files()
+    generate_split_dataset_files(0.15)
