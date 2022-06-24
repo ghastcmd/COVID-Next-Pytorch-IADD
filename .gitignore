@@ -1,5 +1,6 @@
 experiments/*
 !experiments/README.md
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

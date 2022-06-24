@@ -8,6 +8,7 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.nn import CrossEntropyLoss
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 from data.dataset import COVIDxFolder
 from data import transforms
@@ -42,7 +43,7 @@ def save_model(model, config):
     log.info("Saved model to {}".format(model_path))
 
 
-def validate(data_loader, model, best_score, global_step, cfg):
+def validate(data_loader, model, best_score, global_step, cfg, loss_fn):
     model.eval()
     gts, predictions = [], []
 
@@ -50,12 +51,14 @@ def validate(data_loader, model, best_score, global_step, cfg):
     for data in data_loader:
         imgs, labels = data
         imgs = util.to_device(imgs, gpu=cfg.gpu)
+        labels = util.to_device(labels, gpu=cfg.gpu)
 
         with torch.no_grad():
             logits = model(imgs)
             probs = model.module.probability(logits)
             preds = torch.argmax(probs, dim=1).cpu().numpy()
 
+        loss = loss_fn(logits, labels)
         labels = labels.cpu().detach().numpy()
 
         predictions.extend(preds)
@@ -68,8 +71,8 @@ def validate(data_loader, model, best_score, global_step, cfg):
                                           average="macro")
     report = classification_report(gts, predictions, output_dict=True)
 
-    log.info("VALIDATION | Accuracy {:.4f} | F1 {:.4f} | Precision {:.4f} | "
-             "Recall {:.4f}".format(acc, f1, prec, rec))
+    log.info("VALIDATION | Loss {:.4f} | F1 {:.4f} | Accuracy {:.4f} | Precision {:.4f} | "
+             "Recall {:.4f}".format(loss.item(), f1, acc, prec, rec))
 
     # if f1 > best_score:
     save_config = {
@@ -84,7 +87,7 @@ def validate(data_loader, model, best_score, global_step, cfg):
     log.info("Validation end")
 
     model.train()
-    return best_score
+    return best_score, loss.item()
 
 
 def main():
@@ -150,6 +153,14 @@ def main():
     if not os.path.isdir(config.ckpts_dir):
         os.mkdir(config.ckpts_dir)
 
+    # Setting early stopping variable
+    counter_early_stopping = 0
+    last_loss = 1
+
+    # Definding the variables for plotting
+    train_loss_list = []
+    val_loss_list = []
+
     # Reset the best metric score
     best_score = -1
     for epoch in range(config.epochs):
@@ -165,7 +176,8 @@ def main():
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-
+        
+        # This is to logg the data
         # if global_step % config.log_steps == 0 and global_step > 0:
         probs = model.module.probability(logits)
         preds = torch.argmax(probs, dim=1).detach().cpu().numpy()
@@ -173,22 +185,43 @@ def main():
         acc, f1, _, _ = util.clf_metrics(preds, labels)
         lr = util.get_learning_rate(optimizer)
 
-        log.info("Step {} | TRAINING batch: Loss {:.4f} | F1 {:.4f} | "
-                    "Accuracy {:.4f} | LR {:.2e}".format(global_step,
+        train_loss_list.append(loss.item())
+
+        log.info("Epoch {} | TRAINING batch: Loss {:.4f} | F1 {:.4f} | "
+                    "Accuracy {:.4f} | LR {:.2e}".format(global_step + 1,
                                                         loss.item(),
                                                         f1, acc,
                                                         lr))
 
         # if global_step % config.eval_steps == 0 and global_step > 0:
-        best_score = validate(val_loader,
+        best_score, val_loss = validate(val_loader,
                                 model,
                                 best_score=best_score,
                                 global_step=global_step,
-                                cfg=config)
+                                cfg=config,
+                                loss_fn=loss_fn)
         scheduler.step(best_score)
 
-        global_step += 1
+        val_loss_list.append(val_loss)
 
+        # This is the early stopping method
+        if last_loss <= loss.item():
+            counter_early_stopping += 1
+        else:
+            counter_early_stopping = 0
+            last_loss = loss.item()
+
+        if counter_early_stopping >= config.early_stopping_patience:
+            break
+
+        global_step += 1
+    
+    plt.title('Comparation between validation and training loss')
+    x_axis = [x for x in range(len(train_loss_list))]
+    plt.plot(x_axis, train_loss_list, label='Train loss')
+    plt.plot(x_axis, val_loss_list, label='Validation loss')
+    plt.legend()
+    plt.savefig('loss_comparison.png', )
 
 if __name__ == '__main__':
     seed = config.random_seed
