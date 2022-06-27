@@ -4,7 +4,7 @@ import cv2 as cv
 
 
 def equalize_all_imgs():
-    base_dir = '.\\dataset\\Base IADD\\'
+    base_dir = './dataset/Base IADD/'
     
     folders = [
         'Atypical',
@@ -23,3 +23,6 @@ def equalize_all_imgs():
             dst = cv.equalizeHist(src)
 
             cv.imwrite(file, dst)
+
+
+equalize_all_imgs()

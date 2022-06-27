@@ -1,8 +1,8 @@
 # General
 name = "COVIDNext50_NewData"
 gpu = True
-batch_size = 32
-n_threads = 4
+batch_size = 80
+n_threads = 20
 random_seed = 1337
 
 # Model
@@ -11,9 +11,10 @@ weights = "" # ./experiments/ckpts/<model.pth>
 
 # Optimizer
 lr = 1e-4
-weight_decay = 1e-3
-lr_reduce_factor = 0.7
+weight_decay = 1e-4
+lr_reduce_factor = 0.8
 lr_reduce_patience = 5
+early_stopping_patience = 10
 
 # Data
 train_imgs = "./dataset/Base IADD"
@@ -36,7 +37,7 @@ height = 256
 n_classes = len(mapping)
 
 # Training
-epochs = 600
-log_steps = 1
-eval_steps = 1
+epochs = 300
+log_steps = 200
+eval_steps = 400
 ckpts_dir = "./experiments/ckpts"

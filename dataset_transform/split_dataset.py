@@ -34,8 +34,8 @@ def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
         for line, label in zip(iter_list_x, iter_list_y):
             fp.write(f'{line},{label}\n')
 
-def generate_split_dataset_files(split_percentage, quantity = 948):
-    assert(quantity <= 948)
+def generate_split_dataset_files(split_percentage, quantity = 2855):
+    assert(quantity <= 2855)
     
     base_dir = './dataset/Base IADD/'
     
