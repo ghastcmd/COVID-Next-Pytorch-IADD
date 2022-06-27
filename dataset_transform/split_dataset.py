@@ -34,15 +34,17 @@ def write_to_folder(dir_name, file_name, iter_list_x, iter_list_y):
         for line, label in zip(iter_list_x, iter_list_y):
             fp.write(f'{line},{label}\n')
 
-def generate_split_dataset_files(split_percentage, quantity = 2855):
-    assert(quantity <= 2855)
+def generate_split_dataset_files(split_percentage, quantity_typ = 2855, quantity_aty = 474, quantity_ind = 1049):
+    assert(quantity_typ <= 2855)
+    assert(quantity_aty <= 474)
+    assert(quantity_ind <= 1049)
     
     base_dir = './dataset/Base IADD/'
     
     types_folder = [
-        ('Atypical', quantity//2, []),
-        ('Typical', quantity//2, []),
-        ('Indeterminate', quantity, []),
+        ('Atypical', quantity_aty, []),
+        ('Typical', quantity_typ, []),
+        ('Indeterminate', quantity_ind, []),
     ]
 
     for type_folder, max_files, to_append in types_folder:
@@ -50,8 +52,8 @@ def generate_split_dataset_files(split_percentage, quantity = 2855):
         for file in os.listdir(current_dir):
             to_append.append(os.path.join(type_folder, file))
 
-    atypical_n_typical = []
-    indeterminate = []
+    typical = []
+    indeterminate_n_atypical = []
     
     random.seed(123)
     
@@ -63,22 +65,22 @@ def generate_split_dataset_files(split_percentage, quantity = 2855):
             file_name = f"{num:0>4}.png"
             full_name = os.path.join(type_folder, file_name)
             
-            if type_folder == 'Atypical' or type_folder == 'Typical':
-                atypical_n_typical.append(full_name)
-            elif type_folder == 'Indeterminate':
-                indeterminate.append(full_name)
+            if type_folder == 'Typical':
+                typical.append(full_name)
+            elif type_folder == 'Indeterminate' or type_folder == 'Atypical':
+                indeterminate_n_atypical.append(full_name)
     
-    ant_labels = [0 for _ in range(len(atypical_n_typical))]
-    ind_labels = [1 for _ in range(len(indeterminate))]
+    typ_labels = [0 for _ in range(len(typical))]
+    ina_labels = [1 for _ in range(len(indeterminate_n_atypical))]
 
-    ant_x_train, ant_x_test, ant_y_train, ant_y_test = split(atypical_n_typical, ant_labels, split_percentage, 123)
-    ind_x_train, ind_x_test, ind_y_train, ind_y_test = split(indeterminate, ind_labels, split_percentage, 123)
+    typ_x_train, typ_x_test, typ_y_train, typ_y_test = split(typical, typ_labels, split_percentage, 123)
+    ina_x_train, ina_x_test, ina_y_train, ina_y_test = split(indeterminate_n_atypical, ina_labels, split_percentage, 123)
 
-    total_x_train = ant_x_train + ind_x_train
-    total_x_test = ant_x_test + ind_x_test
+    total_x_train = typ_x_train + ina_x_train
+    total_x_test = typ_x_test + ina_x_test
     
-    total_y_train = ant_y_train + ind_y_train
-    total_y_test = ant_y_test + ind_y_test
+    total_y_train = typ_y_train + ina_y_train
+    total_y_test = typ_y_test + ina_y_test
     
     total_x_train, total_y_train = pair_shuffle(total_x_train, total_y_train, 123)
     total_x_test, total_y_test = pair_shuffle(total_x_test, total_y_test, 123)
@@ -87,4 +89,4 @@ def generate_split_dataset_files(split_percentage, quantity = 2855):
     write_to_folder(base_dir, 'test.txt', total_x_test, total_y_test)
     
 if __name__ == '__main__':
-    generate_split_dataset_files(0.15)
+    generate_split_dataset_files(0.15, )

@@ -1,8 +1,8 @@
 # General
 name = "COVIDNext50_NewData"
 gpu = True
-batch_size = 80
-n_threads = 20
+batch_size = 32
+n_threads = 4
 random_seed = 1337
 
 # Model
@@ -26,8 +26,8 @@ val_labels = "./dataset/Base IADD/test.txt"
 #! Change this to modify the number of clases
 # Categories mapping
 mapping = {
-    'Typical and Atypical': 0,
-    'Indeterminate': 1,
+    'Typical': 0,
+    'Indeterminate and Atypical': 1,
 }
 # Loss weigths order follows the order in the category mapping dict
 loss_weights = [0.05, 0.05]
