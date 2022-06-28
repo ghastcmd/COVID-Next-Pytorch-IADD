@@ -6,6 +6,10 @@ The purpose of this repository is to host source-code for the COVID-Next deep co
 
 After downloading the database from the link above, you need to convert the database for it to work properly with the model. To do this, you need to run the script `generate_dataset.py`, with the command `py generate_dataset.py`.
 
+## Using the pretrained model
+
+Also, you can download the pretrained model, that achieves 70.02 F1 score, in the following [link](https://drive.google.com/file/d/1Ou1oBQzLnnAsns8x0kMDNt8ybGx49-jW/view?usp=sharing).
+
 # COVID-Next &rarr; Pytorch upgrade of the COVID-Net
 
 Inspired by the recent paper [COVID-Net: A Tailored Deep Convolutional Neural Network Design for Detection of COVID-19 Cases from Chest Radiography Images](https://arxiv.org/pdf/2003.09871.pdf) and its Tensorflow [implementation](https://github.com/lindawangg/COVID-Net), we are now open sourcing the upgraded Pytorch version called COVID-Next.
