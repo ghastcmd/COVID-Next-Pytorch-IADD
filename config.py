@@ -11,7 +11,7 @@ weights = "" # ./experiments/ckpts/<model.pth>
 
 # Optimizer
 lr = 1e-4
-weight_decay = 1e-4
+weight_decay = 1e-2
 lr_reduce_factor = 0.8
 lr_reduce_patience = 5
 early_stopping_patience = 10
